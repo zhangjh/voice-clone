@@ -9,19 +9,18 @@ work_dir=`pwd`
 cp .condarc ~/
 conda create -n GPTSoVits python=3.9 -y
 conda activate GPTSoVits
+pip install -r requirements.txt
+
 ## 模型整合
 cd ${work_dir}/GPT_SoVITS/pretrained_models
-cat s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2.part.* > s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2
-tar -jxvf s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2 && rm s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2
+cat s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2.part.* | tar xz
 tar -jxvf s2G488k.pth.bz2
 
 cd chinese-hubert-base/
-cat pytorch_model.bin.bz2.part.* > pytorch_model.bin.bz2
-tar -jxvf pytorch_model.bin.bz2 && rm pytorch_model.bin.bz2
+cat pytorch_model.bin.bz2.part.* | tar xz
 
 cd ../chinese-roberta-wwm-ext-large
-cat pytorch_model.bin.bz2.part.* > pytorch_model.bin.bz2
-tar -jxvf pytorch_model.bin.bz2 && rm pytorch_model.bin.bz2
+cat pytorch_model.bin.bz2.part.* | tar xz
 
 cd ${work_dir}
 

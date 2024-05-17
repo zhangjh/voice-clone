@@ -1,0 +1,6 @@
+.idea
+
+GPT_SoVITS/pretrained_models/chinese-hubert-base/pytorch_model.bin
+GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large/pytorch_model.bin
+GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt
+GPT_SoVITS/pretrained_models/s2G488k.pth
