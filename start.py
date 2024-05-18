@@ -3,11 +3,9 @@ import subprocess
 import shutil
 
 def run_command(command):
-    """Run a shell command and handle errors."""
-    print(os.getcwd())
-    result = subprocess.run(command, shell=True)
-    if result.returncode != 0:
-        raise Exception(f"Command failed: {command}")
+    """Run a shell command and check for errors."""
+    result = subprocess.run(command, shell=True, check=True, text=True)
+    return result
 
 def main():
     lang = "zh"
@@ -17,33 +15,32 @@ def main():
     # Copy .condarc to home directory
     shutil.copy('.condarc', os.path.expanduser('~'))
 
-    run_command("bash setup_conda.sh")
+    # Execute commands in a bash shell
+    bash_commands = f"""
+    conda init
+    conda create -n GPTSoVits python=3.9 -y
+    source activate GPTSoVits
+    pip install -r requirements.txt
 
     # Model integration
-    pretrained_models_dir = os.path.join(work_dir, 'GPT_SoVITS', 'pretrained_models')
-    os.chdir(pretrained_models_dir)
+    cd {work_dir}/GPT_SoVITS/pretrained_models
+    cat s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2.part.* | bunzip2 | tar x
+    tar -jxvf s2G488k.pth.bz2
 
-    # Combine and extract s1bert model files
-    run_command("cat s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt.bz2.part.* | bunzip2 | tar x")
+    cd chinese-hubert-base/
+    cat pytorch_model.bin.bz2.part.* | bunzip2 | tar x
 
-    # Extract s2G488k model file
-    run_command("tar -jxvf s2G488k.pth.bz2")
+    cd ../chinese-roberta-wwm-ext-large
+    cat pytorch_model.bin.bz2.part.* | bunzip2 | tar x
 
-    # Combine and extract chinese-hubert-base model files
-    chinese_hubert_base_dir = os.path.join(pretrained_models_dir, 'chinese-hubert-base')
-    os.chdir(chinese_hubert_base_dir)
-    run_command("cat pytorch_model.bin.bz2.part.* | bunzip2 | tar x")
+    cd {work_dir}
 
-    # Combine and extract chinese-roberta-wwm-ext-large model files
-    chinese_roberta_wwm_ext_large_dir = os.path.join(pretrained_models_dir, 'chinese-roberta-wwm-ext-large')
-    os.chdir(chinese_roberta_wwm_ext_large_dir)
-    run_command("cat pytorch_model.bin.bz2.part.* | bunzip2 | tar x")
+    # Run the Python script
+    python3 {work_dir}/api.py -dl "{lang}" -cp "{split}"
+    """
 
-    # Change back to work directory
-    os.chdir(work_dir)
-
-    # Run the Python API script
-    run_command(f"python3 {os.path.join(work_dir, 'api.py')} -dl \"{lang}\" -cp \"{split}\"")
+    # Run the bash commands
+    run_command(f'bash -c "{bash_commands}"')
 
 if __name__ == "__main__":
     main()
