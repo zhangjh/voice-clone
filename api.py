@@ -149,6 +149,8 @@ import logging
 import subprocess
 
 gradio_url = os.getenv('OPENI_GRADIO_URL')
+if gradio_url is None:
+    gradio_url = ""
 
 class DefaultRefer:
     def __init__(self, path, text, language):
@@ -665,7 +667,7 @@ change_gpt_weights(gpt_path)
 # --------------------------------
 app = FastAPI()
 
-@app.post("/set_model")
+@app.post(gradio_url + "/set_model")
 async def set_model(request: Request):
     json_post_raw = await request.json()
     global gpt_path
@@ -678,18 +680,18 @@ async def set_model(request: Request):
     return "ok"
 
 
-@app.post("/control")
+@app.post(gradio_url + "/control")
 async def control(request: Request):
     json_post_raw = await request.json()
     return handle_control(json_post_raw.get("command"))
 
 
-@app.get("/control")
+@app.get(gradio_url + "/control")
 async def control(command: str = None):
     return handle_control(command)
 
 
-@app.post("/change_refer")
+@app.post(gradio_url + "/change_refer")
 async def change_refer(request: Request):
     json_post_raw = await request.json()
     return handle_change(
@@ -699,7 +701,7 @@ async def change_refer(request: Request):
     )
 
 
-@app.get("/change_refer")
+@app.get(gradio_url + "/change_refer")
 async def change_refer(
         refer_wav_path: str = None,
         prompt_text: str = None,
@@ -708,7 +710,7 @@ async def change_refer(
     return handle_change(refer_wav_path, prompt_text, prompt_language)
 
 
-@app.post("/")
+@app.post(gradio_url + "/")
 async def tts_endpoint(request: Request):
     json_post_raw = await request.json()
     return handle(
@@ -721,7 +723,7 @@ async def tts_endpoint(request: Request):
     )
 
 
-@app.get("/")
+@app.get(gradio_url + "/")
 async def tts_endpoint(
         refer_wav_path: str = None,
         prompt_text: str = None,
