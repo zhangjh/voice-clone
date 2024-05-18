@@ -7,9 +7,7 @@ split="，。？！,.?!"
 work_dir=`pwd`
 
 cp .condarc ~/
-conda create -n GPTSoVits python=3.9 -y
-conda activate GPTSoVits
-pip install -r requirements.txt
+bash setup_conda.sh
 
 ## 模型整合
 cd ${work_dir}/GPT_SoVITS/pretrained_models
