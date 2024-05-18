@@ -665,7 +665,7 @@ change_gpt_weights(gpt_path)
 # --------------------------------
 app = FastAPI()
 
-@app.post(gradio_url + "/set_model")
+@app.post("/set_model")
 async def set_model(request: Request):
     json_post_raw = await request.json()
     global gpt_path
@@ -678,18 +678,18 @@ async def set_model(request: Request):
     return "ok"
 
 
-@app.post(gradio_url + "/control")
+@app.post("/control")
 async def control(request: Request):
     json_post_raw = await request.json()
     return handle_control(json_post_raw.get("command"))
 
 
-@app.get(gradio_url + "/control")
+@app.get("/control")
 async def control(command: str = None):
     return handle_control(command)
 
 
-@app.post(gradio_url + "/change_refer")
+@app.post("/change_refer")
 async def change_refer(request: Request):
     json_post_raw = await request.json()
     return handle_change(
@@ -699,7 +699,7 @@ async def change_refer(request: Request):
     )
 
 
-@app.get(gradio_url + "/change_refer")
+@app.get("/change_refer")
 async def change_refer(
         refer_wav_path: str = None,
         prompt_text: str = None,
@@ -708,7 +708,7 @@ async def change_refer(
     return handle_change(refer_wav_path, prompt_text, prompt_language)
 
 
-@app.post(gradio_url + "/")
+@app.post("/")
 async def tts_endpoint(request: Request):
     json_post_raw = await request.json()
     return handle(
@@ -721,7 +721,7 @@ async def tts_endpoint(request: Request):
     )
 
 
-@app.get(gradio_url + "/")
+@app.get("/")
 async def tts_endpoint(
         refer_wav_path: str = None,
         prompt_text: str = None,
