@@ -5,6 +5,7 @@ import torch
 os.environ['is_half'] = "false"
 
 # 推理用的指定模型
+work_dir = "/home/voice-clone/"
 sovits_path = ""
 gpt_path = ""
 is_half_str = os.environ.get("is_half", "True")
@@ -12,10 +13,10 @@ is_half = True if is_half_str.lower() == 'true' else False
 is_share_str = os.environ.get("is_share","False")
 is_share= True if is_share_str.lower() == 'true' else False
 
-cnhubert_path = "GPT_SoVITS/pretrained_models/chinese-hubert-base"
-bert_path = "GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large"
-pretrained_sovits_path = "GPT_SoVITS/pretrained_models/s2G488k.pth"
-pretrained_gpt_path = "GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
+cnhubert_path = work_dir + "GPT_SoVITS/pretrained_models/chinese-hubert-base"
+bert_path = work_dir + "GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large"
+pretrained_sovits_path = work_dir + "GPT_SoVITS/pretrained_models/s2G488k.pth"
+pretrained_gpt_path = work_dir + "GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
 
 exp_root = "logs"
 python_exec = sys.executable or "python"
