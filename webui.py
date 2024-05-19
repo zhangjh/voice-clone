@@ -1,3 +1,11 @@
+""" ********************************** """
+from fastapi import FastAPI
+import os
+import gradio import gr
+app = FastAPI()
+""" ********************************** """
+"""以上为gradio方式平台启动固定需要的代码"""
+
 import os,shutil,sys,pdb,re
 now_dir = os.getcwd()
 sys.path.insert(0, now_dir)
@@ -670,7 +678,7 @@ def close1abc():
         ps1abc=[]
     return "已终止所有一键三连进程", {"__type__": "update", "visible": True}, {"__type__": "update", "visible": False}
 
-with gr.Blocks(title="GPT-SoVITS WebUI") as app:
+with gr.Blocks(title="GPT-SoVITS WebUI") as demo:
 
     with gr.Tabs():
         with gr.TabItem(i18n("0-前置数据集获取工具")):#提前随机切片防止uvr5爆内存->uvr5->slicer->asr->打标
@@ -861,10 +869,14 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
                     tts_info = gr.Textbox(label=i18n("TTS推理WebUI进程输出信息"))
                     if_tts.change(change_tts_inference, [if_tts,bert_pretrained_dir,cnhubert_base_dir,gpu_number_1C,GPT_dropdown,SoVITS_dropdown], [tts_info])
         with gr.TabItem(i18n("2-GPT-SoVITS-变声")):gr.Markdown(value=i18n("施工中，请静候佳音"))
-    app.queue(concurrency_count=511, max_size=1022).launch(
+    demo.queue(concurrency_count=511, max_size=1022).launch(
         server_name="0.0.0.0",
         inbrowser=True,
         share=is_share,
         server_port=webui_port_main,
         quiet=True,
     )
+
+#demo.launch()
+"""以下为平台固定需要的代码 替换gradio的demo.launch()启动方式"""
+app = gr.mount_gradio_app(app, demo, path=os.getenv('OPENI_GRADIO_URL'))
