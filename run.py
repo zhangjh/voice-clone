@@ -632,5 +632,13 @@ def run_command(command):
 if __name__ == "__main__":
     # 打印当前路径
     print(f"当前路径: {os.getcwd()}")
-    uvicorn.run(app, host='0.0.0.0', port=port, workers=1)
+    # 执行bash命令
+    command = f'cd /home/voice-clone && conda activate GPTSoVits && exec python run.py --start'
+
+    # 检查是否传入了 --start 参数
+    if "--start" in sys.argv:
+        uvicorn.run(app, host='0.0.0.0', port=8000, workers=1)
+    else:
+        # 运行激活环境并启动脚本的命令
+        subprocess.run(command, shell=True, executable='/bin/bash')
 
