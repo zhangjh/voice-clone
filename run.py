@@ -624,7 +624,16 @@ async def tts_endpoint(
 ):
     return handle(refer_wav_path, prompt_text, prompt_language, text, text_language, cut_punc)
 
+def run_command(command):
+    """Run a shell command and check for errors."""
+    result = subprocess.run(command, shell=True, check=True, text=True)
+    return result
 
 if __name__ == "__main__":
+    bash_commands = f"""
+        source activate GPTSoVits
+        cd /home/voice-clone
+        python3 api.py -dl "zh" -cp "，。？！,.?!"
+    """
     uvicorn.run(app, host='0.0.0.0', port=port, workers=1)
 
