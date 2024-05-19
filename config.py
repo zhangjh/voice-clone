@@ -2,14 +2,6 @@ import sys,os
 
 import torch
 
-from c2net.context import prepare
-
-#初始化导入数据集和预训练模型到容器内
-c2net_context = prepare()
-
-#获取预训练模型路径
-voice_clone_model_2pjt_path = c2net_context.pretrain_model_path + "/"+"voice-clone_model_2pjt"
-
 os.environ['is_half'] = "false"
 
 # 推理用的指定模型
@@ -20,10 +12,10 @@ is_half = True if is_half_str.lower() == 'true' else False
 is_share_str = os.environ.get("is_share","False")
 is_share= True if is_share_str.lower() == 'true' else False
 
-cnhubert_path = voice_clone_model_2pjt_path + "GPT_SoVITS/pretrained_models/chinese-hubert-base"
-bert_path = voice_clone_model_2pjt_path + "GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large"
-pretrained_sovits_path = voice_clone_model_2pjt_path + "GPT_SoVITS/pretrained_models/s2G488k.pth"
-pretrained_gpt_path = voice_clone_model_2pjt_path + "GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
+cnhubert_path = "GPT_SoVITS/pretrained_models/chinese-hubert-base"
+bert_path = "GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large"
+pretrained_sovits_path = "GPT_SoVITS/pretrained_models/s2G488k.pth"
+pretrained_gpt_path = "GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt"
 
 exp_root = "logs"
 python_exec = sys.executable or "python"
