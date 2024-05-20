@@ -1,11 +1,3 @@
-""" ********************************** """
-from fastapi import FastAPI
-import os
-import gradio import gr
-app = FastAPI()
-""" ********************************** """
-"""以上为gradio方式平台启动固定需要的代码"""
-
 import os,shutil,sys,pdb,re
 now_dir = os.getcwd()
 sys.path.insert(0, now_dir)
@@ -876,7 +868,3 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as demo:
         server_port=webui_port_main,
         quiet=True,
     )
-
-#demo.launch()
-"""以下为平台固定需要的代码 替换gradio的demo.launch()启动方式"""
-app = gr.mount_gradio_app(app, demo, path=os.getenv('OPENI_GRADIO_URL'))

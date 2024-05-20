@@ -635,10 +635,5 @@ if __name__ == "__main__":
     # 执行bash命令
     command = f'cd /home/voice-clone && conda activate GPTSoVits && exec python run.py --start'
 
-    # 检查是否传入了 --start 参数
-    if "--start" in sys.argv:
-        uvicorn.run(app, host='0.0.0.0', port=8000, workers=1)
-    else:
-        # 运行激活环境并启动脚本的命令
-        subprocess.run(command, shell=True, executable='/bin/bash')
+    uvicorn.run(app, host='0.0.0.0', port=port, workers=1)
 

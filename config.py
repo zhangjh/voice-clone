@@ -5,7 +5,7 @@ import torch
 os.environ['is_half'] = "false"
 
 # 推理用的指定模型
-work_dir = "/home/voice-clone/"
+work_dir = ""
 sovits_path = ""
 gpt_path = ""
 is_half_str = os.environ.get("is_half", "True")
